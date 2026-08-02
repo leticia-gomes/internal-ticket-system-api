@@ -1,0 +1,14 @@
+import express from 'express';
+
+const app = express();
+
+app.use(express.json());
+
+app.get('/health', (_request, response) => {
+  return response.status(200).json({
+    status: 'ok',
+    message: 'Internal Ticket System API is running'
+  });
+});
+
+export { app };

@@ -1,9 +1,23 @@
+# Dependencies
 node_modules/
+
+# Compiled files
 dist/
+
+# Environment variables
 .env
+
+# Logs
+*.log
+logs/
+
+# Test coverage
 coverage/
 
+# Editor settings
 .vscode/
 .idea/
 
-*.log
+# Operating system files
+.DS_Store
+Thumbs.db
