@@ -1,7 +1,45 @@
+import 'reflect-metadata';
+
+import { createServer } from 'node:http';
+
+import { Server } from 'socket.io';
+
 import { app } from './app.js';
+import { environment } from './config/environment.js';
+import { AppDataSource } from './database/data-source.js';
 
-const port = Number(process.env.PORT) || 3333;
+async function startServer(): Promise<void> {
+  try {
+    await AppDataSource.initialize();
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+    console.log('Database connection established successfully.');
+
+    const httpServer = createServer(app);
+
+    const io = new Server(httpServer, {
+      cors: {
+        origin: environment.application.frontendUrl,
+        credentials: true
+      }
+    });
+
+    io.on('connection', socket => {
+      console.log(`Socket connected: ${socket.id}`);
+
+      socket.on('disconnect', () => {
+        console.log(`Socket disconnected: ${socket.id}`);
+      });
+    });
+
+    httpServer.listen(environment.application.port, () => {
+      console.log(
+        `Server running on http://localhost:${environment.application.port}`
+      );
+    });
+  } catch (error) {
+    console.error('Failed to start application:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
