@@ -1,14 +1,16 @@
 import 'reflect-metadata';
 
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { DataSource } from 'typeorm';
 
 import { environment } from '../config/environment.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { Role } from '../modules/role/entities/role.entity.js';
+import { TicketComment } from '../modules/ticket-comment/entities/ticket-comment.entity.js';
+import { TicketHistory } from '../modules/ticket-history/entities/ticket-history.entity.js';
+import { TicketPriority } from '../modules/ticket-priority/entities/ticket-priority.entity.js';
+import { TicketStatus } from '../modules/ticket-status/entities/ticket-status.entity.js';
+import { Ticket } from '../modules/ticket/entities/ticket.entity.js';
+import { User } from '../modules/user/entities/user.entity.js';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -19,11 +21,21 @@ export const AppDataSource = new DataSource({
   password: environment.database.password,
   database: environment.database.name,
 
+  charset: 'utf8mb4',
+
   synchronize: false,
   logging: environment.nodeEnv === 'development',
 
-  entities: [path.join(__dirname, '../entities/**/*.{ts,js}')],
-  migrations: [path.join(__dirname, 'migrations/**/*.{ts,js}')],
-});
+  entities: [
+    Role, 
+    TicketComment, 
+    TicketHistory, 
+    TicketPriority, 
+    TicketStatus, 
+    Ticket, 
+    User
+  ],
 
-export default AppDataSource;
+  migrations: [`${process.cwd()}/src/database/migrations/*.{ts,js}`],
+  migrationsTableName: 'migrations'
+});
