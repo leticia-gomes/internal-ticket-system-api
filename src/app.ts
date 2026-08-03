@@ -7,7 +7,7 @@ app.use(express.json());
 app.get('/health', (_request, response) => {
   return response.status(200).json({
     status: 'ok',
-    message: 'Internal Ticket System API is running'
+    message: 'Internal Ticket System API is running',
   });
 });
 
