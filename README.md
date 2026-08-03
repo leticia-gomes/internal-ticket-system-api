@@ -188,6 +188,11 @@ Resposta esperada:
 * Configuração do `dotenv`
 * Arquivo `.env.example`
 * Configuração centralizada da aplicação
+* Configuração do TypeORM
+* Configuração da conexão com o MySQL
+* Criação do DataSource
+* Configuração de scripts para migrations
+* Inicialização da conexão com o banco de dados
 
 ---
 
@@ -206,9 +211,9 @@ Resposta esperada:
 
 ## Infraestrutura
 
-* [ ] Configure Express
-* [ ] Configure TypeORM
-* [ ] Configure MySQL
+* [x] Configure Express
+* [x] Configure TypeORM
+* [x] Configure MySQL
 * [ ] Configure Socket.IO
 
 ## Funcionalidades
