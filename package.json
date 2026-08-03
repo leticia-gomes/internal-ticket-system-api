@@ -13,7 +13,13 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate": "npm run typecheck && npm run lint && npm run format:check"
+    "validate": "npm run typecheck && npm run lint && npm run format:check",
+    "typeorm": "typeorm-ts-node-esm",
+    "migration:create": "npm run typeorm -- migration:create",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run -- -d src/database/data-source.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -- -d src/database/data-source.ts",
+    "migration:show": "npm run typeorm -- migration:show -- -d src/database/data-source.ts"
   },
   "repository": {
     "type": "git",
@@ -51,6 +57,7 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.9.0",
     "prettier": "^3.9.6",
+    "ts-node": "^10.9.2",
     "tsx": "^4.23.4",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.65.0"
