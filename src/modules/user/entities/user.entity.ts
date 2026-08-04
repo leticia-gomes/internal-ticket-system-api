@@ -41,7 +41,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.AGENT,
+    default: UserRole.REQUESTER,
   })
   role!: UserRole;
 
@@ -74,5 +74,5 @@ export class User {
   comments!: Relation<TicketComment[]>;
 
   @OneToMany(() => TicketHistory, history => history.changedBy)
-  ticketHistory!: Relation<TicketHistory[]>;
+  ticketHistories!: Relation<TicketHistory[]>;
 }

@@ -40,7 +40,7 @@ export class CreateUserService {
       name: data.name.trim(),
       email: normalizedEmail,
       passwordHash,
-      role: data.role || UserRole.AGENT,
+      role: data.role || UserRole.REQUESTER,
       isActive: true
     });
 

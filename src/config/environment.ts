@@ -33,8 +33,8 @@ function getNumberEnvironmentVariable(
 const supportedLocales = ['pt-BR', 'en'] as const;
 
 const locale = supportedLocales.includes(process.env.APP_LOCALE as SupportedLocale)
-  ? (process.env.APP_LOCALE as SupportedLocale): 'en';
-  
+  ? (process.env.APP_LOCALE as SupportedLocale) : 'en';
+
 export const environment = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
 
@@ -52,5 +52,10 @@ export const environment = {
     username: getRequiredEnvironmentVariable('DATABASE_USERNAME'),
     password: process.env.DATABASE_PASSWORD ?? '',
     name: getRequiredEnvironmentVariable('DATABASE_NAME')
+  },
+
+  jwt: {
+    secret: process.env.JWT_SECRET!,
+    expiresIn: process.env.JWT_EXPIRES_IN ?? '1d'
   }
 };
