@@ -38,8 +38,6 @@ src/
 │   ├── role/
 │   ├── user/
 │   ├── ticket/
-│   ├── ticket-status/
-│   ├── ticket-priority/
 │   ├── ticket-comment/
 │   └── ticket-history/
 ├── shared/

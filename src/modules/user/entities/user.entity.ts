@@ -2,18 +2,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Relation,
   UpdateDateColumn
 } from 'typeorm';
 
-import { Role } from '../../role/entities/role.entity.js';
 import { TicketComment } from '../../ticket-comment/entities/ticket-comment.entity.js';
 import { TicketHistory } from '../../ticket-history/entities/ticket-history.entity.js';
 import { Ticket } from '../../ticket/entities/ticket.entity.js';
+import { UserRole } from '../enum/user-role.enum.js';
 
 @Entity('users')
 export class User {
@@ -41,19 +39,11 @@ export class User {
   passwordHash!: string;
 
   @Column({
-    name: 'role_id',
-    type: 'int'
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.AGENT,
   })
-  roleId!: number;
-
-  @ManyToOne(() => Role, role => role.users, {
-    nullable: false
-  })
-  @JoinColumn({
-    name: 'role_id',
-    foreignKeyConstraintName: 'fk_users_role'
-  })
-  role!: Relation<Role>;
+  role!: UserRole;
 
   @Column({
     name: 'is_active',

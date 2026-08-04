@@ -2,24 +2,23 @@ import { hash } from 'bcryptjs';
 
 import { AppError } from '../../../shared/errors/app-error.js';
 import { t } from '../../../shared/i18n/translate.js';   
-import { RoleRepository } from '../../role/repositories/role.repository.js';
 import { CreateUserDto } from '../dtos/create-user.dto.js';
 import { User } from '../entities/user.entity.js';
 import { UserRepository } from '../repositories/user.repository.js';
+import { UserRole } from '../enum/user-role.enum.js';
 
 interface CreateUserResponse {
   id: number;
   name: string;
   email: string;
-  roleId: number;
+  role: UserRole;
   isActive: boolean;
   createdAt: Date;
 }
 
 export class CreateUserService {
   constructor(
-    private readonly userRepository = new UserRepository(),
-    private readonly roleRepository = new RoleRepository()
+    private readonly userRepository = new UserRepository()
   ) {}
 
   async execute(data: CreateUserDto): Promise<CreateUserResponse> {
@@ -35,24 +34,13 @@ export class CreateUserService {
         'USER_EMAIL_ALREADY_REGISTERED');
     }
 
-    const defaultRole =
-      await this.roleRepository.findBySlug('requester');
-
-    if (!defaultRole) {
-      throw new AppError(
-        t('role.defaultNotConfigured'),
-        500,
-        'ROLE_DEFAULT_NOT_CONFIGURED'
-      );
-    }
-
     const passwordHash = await hash(data.password, 12);
 
     const user: User = await this.userRepository.create({
       name: data.name.trim(),
       email: normalizedEmail,
       passwordHash,
-      roleId: defaultRole.id,
+      role: data.role || UserRole.AGENT,
       isActive: true
     });
 
@@ -60,7 +48,7 @@ export class CreateUserService {
       id: user.id,
       name: user.name,
       email: user.email,
-      roleId: user.roleId,
+      role: user.role,
       isActive: user.isActive,
       createdAt: user.createdAt
     };

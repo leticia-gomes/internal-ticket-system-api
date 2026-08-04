@@ -4,11 +4,8 @@ import { DataSource } from 'typeorm';
 
 import { environment } from '../config/environment.js';
 
-import { Role } from '../modules/role/entities/role.entity.js';
 import { TicketComment } from '../modules/ticket-comment/entities/ticket-comment.entity.js';
 import { TicketHistory } from '../modules/ticket-history/entities/ticket-history.entity.js';
-import { TicketPriority } from '../modules/ticket-priority/entities/ticket-priority.entity.js';
-import { TicketStatus } from '../modules/ticket-status/entities/ticket-status.entity.js';
 import { Ticket } from '../modules/ticket/entities/ticket.entity.js';
 import { User } from '../modules/user/entities/user.entity.js';
 
@@ -27,11 +24,8 @@ export const AppDataSource = new DataSource({
   logging: environment.nodeEnv === 'development',
 
   entities: [
-    Role, 
     TicketComment, 
     TicketHistory, 
-    TicketPriority, 
-    TicketStatus, 
     Ticket, 
     User
   ],

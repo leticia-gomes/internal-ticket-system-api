@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { validationMessage } from '../../../shared/validation/validation-messages.js';
+import { UserRole } from '../enum/user-role.enum.js';
 
 export const createUserSchema = z.object({
     name: z
@@ -16,13 +17,10 @@ export const createUserSchema = z.object({
         }),
 
     email: z
-        .string({
-            error: validationMessage.required('email')
-        })
-        .trim()
         .email({
             error: validationMessage.email('email')
         })
+        .trim()
         .max(255, {
             error: validationMessage.maxLength('email', 255)
         })
@@ -39,16 +37,9 @@ export const createUserSchema = z.object({
             error: validationMessage.maxLength('password', 72)
         }),
 
-    roleId: z
-        .number({
-            error: validationMessage.number('roleId')
-        })
-        .int({
-            error: validationMessage.integer('roleId')
-        })
-        .positive({
-            error: validationMessage.positive('roleId')
-        })
+    role: z
+        .enum(UserRole)
+        .optional()
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
