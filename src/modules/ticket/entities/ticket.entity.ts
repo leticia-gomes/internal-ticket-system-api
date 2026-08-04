@@ -13,9 +13,9 @@ import {
 
 import { TicketComment } from '../../ticket-comment/entities/ticket-comment.entity.js';
 import { TicketHistory } from '../../ticket-history/entities/ticket-history.entity.js';
-import { TicketPriority } from '../../ticket-priority/entities/ticket-priority.entity.js';
-import { TicketStatus } from '../../ticket-status/entities/ticket-status.entity.js';
 import { User } from '../../user/entities/user.entity.js';
+import { TicketPriority } from '../enums/ticket-priority.enum.js';
+import { TicketStatus } from '../enums/ticket-status.enum.js';
 
 @Entity('tickets')
 export class Ticket {
@@ -34,34 +34,18 @@ export class Ticket {
   description!: string;
 
   @Column({
-    name: 'status_id',
-    type: 'int'
+    type: 'enum',
+    enum: TicketStatus,
+    default: TicketStatus.OPEN,
   })
-  statusId!: number;
-
-  @ManyToOne(() => TicketStatus, status => status.tickets, {
-    nullable: false
-  })
-  @JoinColumn({
-    name: 'status_id',
-    foreignKeyConstraintName: 'fk_tickets_status'
-  })
-  status!: Relation<TicketStatus>;
+  status!: TicketStatus;
 
   @Column({
-    name: 'priority_id',
-    type: 'int'
+    type: 'enum',
+    enum: TicketPriority,
+    default: TicketPriority.MEDIUM
   })
-  priorityId!: number;
-
-  @ManyToOne(() => TicketPriority, priority => priority.tickets, {
-    nullable: false
-  })
-  @JoinColumn({
-    name: 'priority_id',
-    foreignKeyConstraintName: 'fk_tickets_priority'
-  })
-  priority!: Relation<TicketPriority>;
+  priority!: TicketPriority;
 
   @Column({
     name: 'created_by_id',
