@@ -4,25 +4,23 @@
   "description": "REST API for an internal ticket management system.",
   "type": "module",
   "main": "dist/server.js",
-"scripts": {
-  "dev": "tsx watch src/server.ts",
-  "build": "tsc",
-  "start": "node dist/server.js",
-  "typecheck": "tsc --noEmit",
-  "lint": "eslint .",
-  "lint:fix": "eslint . --fix",
-  "format": "prettier --write .",
-  "format:check": "prettier --check .",
-  "validate": "npm run typecheck && npm run lint && npm run format:check",
-
-  "typeorm": "typeorm-ts-node-esm",
-
-  "migration:create": "npm run typeorm -- migration:create",
-  "migration:generate": "npm run typeorm -- migration:generate -d src/database/data-source.ts",
-  "migration:run": "npm run typeorm -- migration:run -d src/database/data-source.ts",
-  "migration:revert": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
-  "migration:show": "npm run typeorm -- migration:show -d src/database/data-source.ts"
-},
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate": "npm run typecheck && npm run lint && npm run format:check",
+    "typeorm": "typeorm-ts-node-esm",
+    "migration:create": "npm run typeorm -- migration:create",
+    "migration:generate": "npm run typeorm -- migration:generate -d src/database/data-source.ts",
+    "migration:run": "npm run typeorm -- migration:run -d src/database/data-source.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
+    "migration:show": "npm run typeorm -- migration:show -d src/database/data-source.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leticia-gomes/internal-ticket-system-api.git"
@@ -41,6 +39,7 @@
   },
   "homepage": "https://github.com/leticia-gomes/internal-ticket-system-api#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
@@ -48,7 +47,8 @@
     "mysql2": "^3.23.2",
     "reflect-metadata": "^0.2.2",
     "socket.io": "^4.8.3",
-    "typeorm": "^1.1.0"
+    "typeorm": "^1.1.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

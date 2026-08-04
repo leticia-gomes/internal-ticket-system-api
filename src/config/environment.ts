@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { SupportedLocale } from '../shared/i18n/i18n.types.js';
 
 function getRequiredEnvironmentVariable(name: string): string {
   const value = process.env[name];
@@ -29,8 +30,15 @@ function getNumberEnvironmentVariable(
   return parsedValue;
 }
 
+const supportedLocales = ['pt-BR', 'en'] as const;
+
+const locale = supportedLocales.includes(process.env.APP_LOCALE as SupportedLocale)
+  ? (process.env.APP_LOCALE as SupportedLocale): 'en';
+  
 export const environment = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
+
+  locale: locale,
 
   application: {
     port: getNumberEnvironmentVariable('PORT', 3333),
