@@ -1,0 +1,1 @@
+export type SupportedLocale = 'pt-BR' | 'en';

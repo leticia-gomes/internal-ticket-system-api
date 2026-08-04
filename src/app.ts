@@ -3,6 +3,8 @@ import express from 'express';
 import helmet from 'helmet';
 
 import { environment } from './config/environment.js';
+import { routes } from './routes/index.js';
+import { errorHandler } from './middlewares/error-handler.middleware.js';
 
 export const app = express();
 
@@ -25,3 +27,7 @@ app.get('/health', (_request, response) => {
     timestamp: new Date().toISOString()
   });
 });
+
+app.use(routes);
+
+app.use(errorHandler);
