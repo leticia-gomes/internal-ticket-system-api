@@ -12,7 +12,7 @@ export class UserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     return this.repository.findOneBy({
-      email
+      email: email.trim().toLowerCase()
     });
   }
 

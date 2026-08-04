@@ -65,7 +65,7 @@ export class TicketHistory {
   })
   changedById!: number;
 
-  @ManyToOne(() => User, user => user.ticketHistory, {
+  @ManyToOne(() => User, user => user.ticketHistories, {
     nullable: false
   })
   @JoinColumn({
