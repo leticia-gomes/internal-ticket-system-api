@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-import { t } from '../../../shared/i18n/translate.js';
+import { translate } from '../../../../shared/i18n/message-catalog.js';
 
-import { createUserSchema } from '../validations/create-user.schema.js';
-import { CreateUserService } from '../services/create-user.service.js';
+import { createUserSchema } from '../../use-cases/create-user/create-user.schema.js';
+import { CreateUserService } from '../../use-cases/create-user/create-user.use-case.js';
 
 export class CreateUserController {
   async handle(
@@ -17,7 +17,7 @@ export class CreateUserController {
     const user = await createUserService.execute(validatedData);
 
     return response.status(201).json({
-      message: t('user.createdSuccessfully'),
+      message: translate('user.createdSuccessfully'),
       data: user
     });
   }

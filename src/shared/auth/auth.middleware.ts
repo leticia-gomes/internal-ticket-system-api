@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { AppError } from '../errors/app-error.js';
-import { t } from '../i18n/translate.js';
+import { translate } from '../i18n/message-catalog.js';
 import { JwtService } from './jwt.service.js';
 
 export class AuthMiddleware {
@@ -19,7 +19,7 @@ export class AuthMiddleware {
 
         if (!authorization) {
             throw new AppError(
-                t("auth.tokenNotProvided"),
+                translate("auth.tokenNotProvided"),
                 401,
                 'AUTH_TOKEN_MISSING'
             );
@@ -30,7 +30,7 @@ export class AuthMiddleware {
 
         if (type !== 'Bearer' || !token) {
             throw new AppError(
-                t("auth.invalidToken"),
+                translate("auth.invalidToken"),
                 401,
                 'AUTH_TOKEN_INVALID'
             );

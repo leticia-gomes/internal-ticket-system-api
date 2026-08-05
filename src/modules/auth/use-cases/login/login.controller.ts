@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { LoginAuthService } from '../services/login-auth.service.js';
-import { loginAuthSchema } from '../validations/login-auth.schema.js';
+import { LoginAuthService } from './login.use-case.js';
+import { loginAuthSchema } from './login.schema.js';
 
 export class LoginAuthController {
 

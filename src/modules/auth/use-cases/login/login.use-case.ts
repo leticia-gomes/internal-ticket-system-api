@@ -1,10 +1,10 @@
 import { compare } from 'bcryptjs';
 
-import { AppError } from '../../../shared/errors/app-error.js';
-import { t } from '../../../shared/i18n/translate.js';
-import { UserRepository } from '../../user/repositories/user.repository.js';
-import { LoginAuthDto } from '../dtos/login-auth.dto.js';
-import { JwtService } from '../../../shared/auth/jwt.service.js';
+import { AppError } from '../../../../shared/errors/app-error.js';
+import { translate } from '../../../../shared/i18n/message-catalog.js';
+import { UserRepository } from '../../../user/repositories/user.repository.js';
+import { LoginAuthDto } from './login.dto.js';
+import { JwtService } from '../../../../shared/auth/jwt.service.js';
 
 interface LoginAuthResponse {
     accessToken: string;
@@ -30,7 +30,7 @@ export class LoginAuthService {
 
         if (!user) {
             throw new AppError(
-                t('auth.invalidCredentials'),
+                translate('auth.invalidCredentials'),
                 401,
                 'AUTH_INVALID_CREDENTIALS'
             );
@@ -43,7 +43,7 @@ export class LoginAuthService {
 
         if (!passwordMatch) {
             throw new AppError(
-                t('auth.invalidCredentials'),
+                translate('auth.invalidCredentials'),
                 401,
                 'AUTH_INVALID_CREDENTIALS'
             );
@@ -57,7 +57,7 @@ export class LoginAuthService {
 
         if (!user.isActive) {
             throw new AppError(
-                t('auth.inactiveUser'),
+                translate('auth.inactiveUser'),
                 403,
                 'AUTH_USER_INACTIVE'
             );

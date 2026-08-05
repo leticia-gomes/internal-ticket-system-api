@@ -46,5 +46,3 @@ export function translate(
     message
   );
 }
-
-export const t = translate;
