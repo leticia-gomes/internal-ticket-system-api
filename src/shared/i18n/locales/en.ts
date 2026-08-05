@@ -36,9 +36,8 @@ export const enMessages = {
   auth: {
     invalidCredentials: 'Invalid email or password.',
     inactiveUser: 'The user is inactive. Please contact the system administrator.',
-    invalidToken: 'The provided token is invalid.',
-    expiredToken: 'The provided token has expired. Please log in again to obtain a new token.',
-    missingToken: 'The authentication token was not provided. Please log in to obtain a valid token.'
+    invalidToken: 'The provided token is invalid or expired. Please log in again to obtain a new token.',
+    tokenNotProvided: 'The authentication token was not provided. Please log in to obtain a valid token.'
   },
 
   ticket: {

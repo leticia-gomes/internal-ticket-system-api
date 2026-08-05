@@ -36,9 +36,8 @@ export const ptBRMessages = {
   auth: {
     invalidCredentials: 'E-mail ou senha inválidos.',
     inactiveUser: 'O usuário está inativo. Entre em contato com o administrador do sistema.',
-    invalidToken: 'O token informado é inválido.',
-    expiredToken: 'O token informado expirou. Faça login novamente para obter um novo token.',
-    missingToken: 'O token de autenticação não foi informado. Faça login para obter um token válido.'
+    invalidToken: 'O token informado é inválido ou expirado. Faça login novamente para obter um novo token.',
+    tokenNotProvided: 'O token de autenticação não foi informado. Faça login para obter um token válido.'
   },
 
   ticket: {
