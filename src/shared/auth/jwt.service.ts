@@ -3,7 +3,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import { environment } from '../../config/environment.js';
 import { UserRole } from '../../modules/user/enum/user-role.enum.js';
 import { AppError } from '../errors/app-error.js';
-import { t } from '../i18n/translate.js';
+import { translate } from '../i18n/message-catalog.js';
 
 interface JwtPayload {
     sub: string;
@@ -30,7 +30,7 @@ export class JwtService {
             ) as JwtPayload;
         } catch {
             throw new AppError(
-                t("auth.invalidToken"),
+                translate("auth.invalidToken"),
                 401,
                 'AUTH_INVALID_TOKEN'
             );

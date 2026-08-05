@@ -1,11 +1,11 @@
 import { hash } from 'bcryptjs';
 
-import { AppError } from '../../../shared/errors/app-error.js';
-import { t } from '../../../shared/i18n/translate.js';   
-import { CreateUserDto } from '../dtos/create-user.dto.js';
-import { User } from '../entities/user.entity.js';
-import { UserRepository } from '../repositories/user.repository.js';
-import { UserRole } from '../enum/user-role.enum.js';
+import { AppError } from '../../../../shared/errors/app-error.js';
+import { translate } from '../../../../shared/i18n/message-catalog.js';   
+import { CreateUserDto } from '../../use-cases/create-user/create-user.dto.js';
+import { User } from '../../entities/user.entity.js';
+import { UserRepository } from '../../repositories/user.repository.js';
+import { UserRole } from '../../enum/user-role.enum.js';
 
 interface CreateUserResponse {
   id: number;
@@ -29,7 +29,7 @@ export class CreateUserService {
 
     if (existingUser) {
       throw new AppError(
-        t('user.emailAlreadyExists'), 
+        translate('user.emailAlreadyExists'), 
         409, 
         'USER_EMAIL_ALREADY_REGISTERED');
     }

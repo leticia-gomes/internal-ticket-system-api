@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { validationMessage } from '../../../shared/validation/validation-messages.js';
-import { UserRole } from '../enum/user-role.enum.js';
+import { validationMessage } from '../../../../shared/i18n/validation-messages.js';
+import { UserRole } from '../../enum/user-role.enum.js';
 
 export const createUserSchema = z.object({
     name: z

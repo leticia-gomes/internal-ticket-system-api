@@ -4,7 +4,7 @@ import helmet from 'helmet';
 
 import { environment } from './config/environment.js';
 import { routes } from './routes/index.js';
-import { errorHandler } from './middlewares/error-handler.middleware.js';
+import { errorHandler } from './shared/middlewares/error-handler.middleware.js';
 
 export const app = express();
 
