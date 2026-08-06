@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -96,13 +95,6 @@ export class Ticket {
     type: 'datetime'
   })
   updatedAt!: Date;
-
-  @DeleteDateColumn({
-    name: 'deleted_at',
-    type: 'datetime',
-    nullable: true
-  })
-  deletedAt!: Date | null;
 
   @OneToMany(() => TicketComment, comment => comment.ticket)
   comments!: Relation<TicketComment[]>;
