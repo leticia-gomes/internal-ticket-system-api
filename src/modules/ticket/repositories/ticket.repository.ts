@@ -51,4 +51,15 @@ export class TicketRepository {
   async save(ticket: Ticket): Promise<Ticket> {
     return this.repository.save(ticket);
   }
+
+  async deactivate(ticket: Ticket): Promise<void> {
+    await this.repository.update(
+      ticket.id,
+      {
+        isActive: false
+      }
+    );
+
+  }
+
 }
