@@ -16,7 +16,7 @@ interface CreateUserResponse {
   createdAt: Date;
 }
 
-export class CreateUserService {
+export class CreateUserUseCase {
   constructor(
     private readonly userRepository = new UserRepository()
   ) {}

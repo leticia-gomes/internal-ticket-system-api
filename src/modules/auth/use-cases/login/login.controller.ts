@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { LoginAuthService } from './login.use-case.js';
+import { LoginUseCase } from './login.use-case.js';
 import { loginAuthSchema } from './login.schema.js';
 
 export class LoginAuthController {
@@ -11,9 +11,9 @@ export class LoginAuthController {
             request.body
         );
 
-        const loginAuthService = new LoginAuthService();
+        const loginUseCase = new LoginUseCase();
 
-        const result = await loginAuthService.execute(
+        const result = await loginUseCase.execute(
             validatedData
         );
 
