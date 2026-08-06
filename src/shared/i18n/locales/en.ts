@@ -20,6 +20,11 @@ export const enMessages = {
     description: 'description'
   },
 
+  common: {
+    validationFailed: 'Validation failed',
+    internalServerError: 'Internal server error'
+  },
+
   user: {
     createdSuccessfully: 'User created successfully.',
     emailAlreadyExists: 'A user with this email already exists.',
