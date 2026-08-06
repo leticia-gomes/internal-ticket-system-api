@@ -6,6 +6,7 @@ import { CreateTicketController } from '../use-cases/create-ticket/create-ticket
 import { ListTicketsController } from '../use-cases/list-tickets/list-tickets.controller.js';
 import { GetTicketController } from '../use-cases/get-ticket/get-ticket.controller.js';
 import { UpdateTicketController } from '../use-cases/update-ticket/update-ticket.controller.js';
+import { DeleteTicketController } from '../use-cases/delete-ticket/delete-ticket.controller.js';
 
 export const ticketRoutes = Router();
 
@@ -15,6 +16,7 @@ const createTicketController = new CreateTicketController();
 const listTicketsController = new ListTicketsController();
 const getTicketController = new GetTicketController();
 const updateTicketController = new UpdateTicketController();
+const deleteTicketController = new DeleteTicketController();
 
 ticketRoutes.use(
     authMiddleware.handle.bind(authMiddleware)
@@ -42,5 +44,5 @@ ticketRoutes.patch(
 
 ticketRoutes.delete(
     '/:id',
-    createTicketController.handle.bind(createTicketController)
+    deleteTicketController.handle.bind(deleteTicketController)
 );
