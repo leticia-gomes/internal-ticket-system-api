@@ -5,6 +5,7 @@ import { translate } from '../../../../shared/i18n/message-catalog.js';
 import { UserRepository } from '../../../user/repositories/user.repository.js';
 import { LoginAuthDto } from './login.dto.js';
 import { JwtService } from '../../../../shared/auth/jwt.service.js';
+import { UserRole } from '../../../user/enum/user-role.enum.js';
 
 interface LoginAuthResponse {
     accessToken: string;
@@ -12,11 +13,11 @@ interface LoginAuthResponse {
         id: number;
         name: string;
         email: string;
-        role: string;
+        role: UserRole;
     };
 }
 
-export class LoginAuthService {
+export class LoginUseCase {
     constructor(
         private readonly userRepository = new UserRepository(),
         private readonly jwtService = new JwtService()
@@ -33,6 +34,14 @@ export class LoginAuthService {
                 translate('auth.invalidCredentials'),
                 401,
                 'AUTH_INVALID_CREDENTIALS'
+            );
+        }
+
+        if (!user.isActive) {
+            throw new AppError(
+                translate('auth.inactiveUser'),
+                403,
+                'AUTH_USER_INACTIVE'
             );
         }
 
@@ -54,14 +63,6 @@ export class LoginAuthService {
             email: user.email,
             role: user.role,
         });
-
-        if (!user.isActive) {
-            throw new AppError(
-                translate('auth.inactiveUser'),
-                403,
-                'AUTH_USER_INACTIVE'
-            );
-        }
 
         return {
             accessToken,
