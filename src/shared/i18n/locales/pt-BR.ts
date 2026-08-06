@@ -20,6 +20,11 @@ export const ptBRMessages = {
     description: 'descrição'
   },
 
+  common: {
+    validationFailed: 'Falha na validação',
+    internalServerError: 'Erro interno do servidor'
+  },
+
   user: {
     createdSuccessfully: 'Usuário criado com sucesso.',
     emailAlreadyExists: 'Já existe um usuário cadastrado com este e-mail.',
@@ -27,7 +32,7 @@ export const ptBRMessages = {
     inactive: 'A conta do usuário está inativa.'
   },
 
-    role: {
+  role: {
     notFound: 'Perfil não encontrado.',
     inactive: 'O perfil selecionado está inativo.',
     defaultNotConfigured: 'O perfil padrão de usuário não está configurado.'
