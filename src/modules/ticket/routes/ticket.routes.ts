@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { AuthMiddleware } from '../../../shared/auth/auth.middleware.js';
 import { CreateTicketController } from '../use-cases/create-ticket/create-ticket.controller.js';
 import { ListTicketsController } from '../use-cases/list-tickets/list-tickets.controller.js';
+import { GetTicketController } from '../use-cases/get-ticket/get-ticket.controller.js';
 
 export const ticketRoutes = Router();
 
@@ -10,6 +11,7 @@ const authMiddleware = new AuthMiddleware();
 
 const createTicketController = new CreateTicketController();
 const listTicketsController = new ListTicketsController();
+const getTicketController = new GetTicketController();
 
 ticketRoutes.use(
     authMiddleware.handle.bind(authMiddleware)
@@ -27,7 +29,7 @@ ticketRoutes.get(
 
 ticketRoutes.get(
     '/:id',
-    createTicketController.handle.bind(createTicketController)
+    getTicketController.handle.bind(getTicketController)
 );
 
 ticketRoutes.patch(
