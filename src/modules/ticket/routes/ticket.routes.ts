@@ -2,12 +2,14 @@ import { Router } from 'express';
 
 import { AuthMiddleware } from '../../../shared/auth/auth.middleware.js';
 import { CreateTicketController } from '../use-cases/create-ticket/create-ticket.controller.js';
+import { ListTicketsController } from '../use-cases/list-tickets/list-tickets.controller.js';
 
 export const ticketRoutes = Router();
 
 const authMiddleware = new AuthMiddleware();
 
 const createTicketController = new CreateTicketController();
+const listTicketsController = new ListTicketsController();
 
 ticketRoutes.use(
     authMiddleware.handle.bind(authMiddleware)
@@ -20,7 +22,7 @@ ticketRoutes.post(
 
 ticketRoutes.get(
     '/',
-    createTicketController.handle.bind(createTicketController)
+    listTicketsController.handle.bind(listTicketsController)
 );
 
 ticketRoutes.get(
