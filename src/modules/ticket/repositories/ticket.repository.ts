@@ -18,16 +18,20 @@ export class TicketRepository {
 
   async findAll(): Promise<Ticket[]> {
     return this.repository.find({
+
       relations: {
         createdBy: true,
         assignedTo: true,
       },
+      
       where: {
         isActive: true,
       },
+
       order: {
         createdAt: 'DESC',
       },
+
     });
   }
 
