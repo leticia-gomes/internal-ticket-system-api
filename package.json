@@ -21,7 +21,11 @@
     "migration:revert": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
     "migration:show": "npm run typeorm -- migration:show -d src/database/data-source.ts",
     "seed": "tsx src/database/seeds/index.ts",
-    "socket:test": "tsx src/tests/socket-test.ts"
+    "socket:test": "tsx src/tests/socket-test.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run src/tests/unit",
+    "test:integration": "vitest run src/tests/integration"
   },
   "repository": {
     "type": "git",
@@ -59,14 +63,17 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.13.3",
+    "@types/supertest": "^7.2.1",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.9.0",
     "prettier": "^3.9.6",
     "socket.io-client": "^4.8.3",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.4",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.65.0"
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   }
 }
