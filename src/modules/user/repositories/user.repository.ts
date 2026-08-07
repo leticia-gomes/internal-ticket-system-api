@@ -25,6 +25,17 @@ export class UserRepository {
     });
   }
 
+  async findAll(): Promise<User[]> {
+    return this.repository.find({
+      where: {
+        isActive: true,
+      },
+      order: {
+        name: 'ASC',
+      },
+    });
+  }
+
   async create(userData: Partial<User>): Promise<User> {
     const user = this.repository.create(userData);
 
