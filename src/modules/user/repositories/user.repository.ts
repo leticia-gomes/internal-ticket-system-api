@@ -12,7 +12,16 @@ export class UserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     return this.repository.findOneBy({
-      email: email.trim().toLowerCase()
+      email: email.trim().toLowerCase(),
+    });
+  }
+
+  async findById(id: number): Promise<User | null> {
+    return this.repository.findOne({
+      where: {
+        id,
+        isActive: true,
+      },
     });
   }
 

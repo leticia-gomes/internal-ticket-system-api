@@ -65,6 +65,13 @@ export class TicketRepository {
     });
   }
 
+  async findByIdForUpdate(id: number): Promise<Ticket | null> {
+    return this.repository.findOneBy({
+      id,
+      isActive: true,
+    });
+  }
+
   async save(ticket: Ticket): Promise<Ticket> {
     return this.repository.save(ticket);
   }
