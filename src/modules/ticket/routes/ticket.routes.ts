@@ -7,6 +7,7 @@ import { ListTicketsController } from '../use-cases/list-tickets/list-tickets.co
 import { GetTicketController } from '../use-cases/get-ticket/get-ticket.controller.js';
 import { UpdateTicketController } from '../use-cases/update-ticket/update-ticket.controller.js';
 import { DeleteTicketController } from '../use-cases/delete-ticket/delete-ticket.controller.js';
+import { CreateCommentController } from '../../ticket-comment/use-cases/create-comment/create-comment.controller.js';
 
 export const ticketRoutes = Router();
 
@@ -18,31 +19,18 @@ const getTicketController = new GetTicketController();
 const updateTicketController = new UpdateTicketController();
 const deleteTicketController = new DeleteTicketController();
 
-ticketRoutes.use(
-    authMiddleware.handle.bind(authMiddleware)
-);
+const createCommentController = new CreateCommentController();
 
-ticketRoutes.post(
-    '/',
-    createTicketController.handle.bind(createTicketController)
-);
+ticketRoutes.use(authMiddleware.handle.bind(authMiddleware));
 
-ticketRoutes.get(
-    '/',
-    listTicketsController.handle.bind(listTicketsController)
-);
+ticketRoutes.post('/', createTicketController.handle.bind(createTicketController));
 
-ticketRoutes.get(
-    '/:id',
-    getTicketController.handle.bind(getTicketController)
-);
+ticketRoutes.get('/', listTicketsController.handle.bind(listTicketsController));
 
-ticketRoutes.patch(
-    '/:id',
-    updateTicketController.handle.bind(updateTicketController)
-);
+ticketRoutes.get('/:id', getTicketController.handle.bind(getTicketController));
 
-ticketRoutes.delete(
-    '/:id',
-    deleteTicketController.handle.bind(deleteTicketController)
-);
+ticketRoutes.patch('/:id', updateTicketController.handle.bind(updateTicketController));
+
+ticketRoutes.delete('/:id', deleteTicketController.handle.bind(deleteTicketController));
+
+ticketRoutes.post('/:id/comments', createCommentController.handle.bind(createCommentController));
