@@ -20,7 +20,8 @@
     "migration:run": "npm run typeorm -- migration:run -d src/database/data-source.ts",
     "migration:revert": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
     "migration:show": "npm run typeorm -- migration:show -d src/database/data-source.ts",
-    "seed": "tsx src/database/seeds/index.ts"
+    "seed": "tsx src/database/seeds/index.ts",
+    "socket:test": "tsx src/tests/socket-test.ts"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.9.0",
     "prettier": "^3.9.6",
+    "socket.io-client": "^4.8.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.4",
     "typescript": "^6.0.2",
