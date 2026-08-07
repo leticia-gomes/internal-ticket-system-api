@@ -1,7 +1,8 @@
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 
 import { AppDataSource } from '../../../database/data-source.js';
 import { Ticket } from '../entities/ticket.entity.js';
+import { ListTicketsDto } from '../use-cases/list-tickets/list-tickets.schema.js';
 
 export class TicketRepository {
   private readonly repository: Repository<Ticket>;
@@ -16,16 +17,26 @@ export class TicketRepository {
     return this.repository.save(ticket);
   }
 
-  async findAll(): Promise<Ticket[]> {
+  async findAll(filters: ListTicketsDto): Promise<Ticket[]> {
+    const where: FindOptionsWhere<Ticket> = {
+      isActive: true,
+    };
+
+    if (filters.status) {
+      where.status = filters.status;
+    }
+
+    if (filters.priority) {
+      where.priority = filters.priority;
+    }
+
     return this.repository.find({
       relations: {
         createdBy: true,
         assignedTo: true,
       },
 
-      where: {
-        isActive: true,
-      },
+      where,
 
       order: {
         createdAt: 'DESC',
