@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import { app } from './app.js';
 import { environment } from './config/environment.js';
 import { AppDataSource } from './database/data-source.js';
+import { socketService } from './shared/socket/socket.service.js';
 
 async function startServer(): Promise<void> {
   try {
@@ -19,12 +20,18 @@ async function startServer(): Promise<void> {
     const io = new Server(httpServer, {
       cors: {
         origin: environment.application.frontendUrl,
-        credentials: true
-      }
+        credentials: true,
+      },
     });
 
-    io.on('connection', socket => {
+    socketService.setIo(io);
+
+    io.on('connection', (socket) => {
       console.log(`Socket connected: ${socket.id}`);
+
+      socketService.emit('server.connected', {
+        message: 'Socket initialized',
+      });
 
       socket.on('disconnect', () => {
         console.log(`Socket disconnected: ${socket.id}`);
@@ -32,9 +39,7 @@ async function startServer(): Promise<void> {
     });
 
     httpServer.listen(environment.application.port, () => {
-      console.log(
-        `Server running on http://localhost:${environment.application.port}`
-      );
+      console.log(`Server running on http://localhost:${environment.application.port}`);
     });
   } catch (error) {
     console.error('Failed to start application:', error);
