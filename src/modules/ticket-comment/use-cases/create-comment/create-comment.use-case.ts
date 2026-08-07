@@ -1,5 +1,6 @@
 import { AppError } from '../../../../shared/errors/app-error.js';
 import { translate } from '../../../../shared/i18n/message-catalog.js';
+import { socketService } from '../../../../shared/socket/socket.service.js';
 
 import { TicketRepository } from '../../../ticket/repositories/ticket.repository.js';
 
@@ -20,12 +21,14 @@ export class CreateCommentUseCase {
       throw new AppError(translate('ticket.notFound'), 404, 'TICKET_NOT_FOUND');
     }
 
-    return this.commentRepository.create({
+    const response = await this.commentRepository.create({
       content: data.content,
-
       ticketId,
-
       userId,
     });
+
+    socketService.emitCommentCreated(response);
+
+    return response;
   }
 }
