@@ -23,6 +23,18 @@ export interface TicketResponseDto {
     role: UserRole;
   } | null;
 
+  comments: {
+    id: number;
+    content: string;
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      role: UserRole;
+    };
+    createdAt: Date;
+  }[];
+
   createdAt: Date;
   updatedAt: Date;
 }

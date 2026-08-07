@@ -18,12 +18,11 @@ export class TicketRepository {
 
   async findAll(): Promise<Ticket[]> {
     return this.repository.find({
-
       relations: {
         createdBy: true,
         assignedTo: true,
       },
-      
+
       where: {
         isActive: true,
       },
@@ -31,7 +30,6 @@ export class TicketRepository {
       order: {
         createdAt: 'DESC',
       },
-
     });
   }
 
@@ -44,6 +42,14 @@ export class TicketRepository {
       relations: {
         createdBy: true,
         assignedTo: true,
+        comments: {
+          user: true,
+        },
+      },
+      order: {
+        comments: {
+          createdAt: 'ASC',
+        },
       },
     });
   }
@@ -53,13 +59,8 @@ export class TicketRepository {
   }
 
   async deactivate(ticket: Ticket): Promise<void> {
-    await this.repository.update(
-      ticket.id,
-      {
-        isActive: false
-      }
-    );
-
+    await this.repository.update(ticket.id, {
+      isActive: false,
+    });
   }
-
 }
