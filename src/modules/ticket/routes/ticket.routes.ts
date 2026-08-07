@@ -8,6 +8,7 @@ import { GetTicketController } from '../use-cases/get-ticket/get-ticket.controll
 import { UpdateTicketController } from '../use-cases/update-ticket/update-ticket.controller.js';
 import { DeleteTicketController } from '../use-cases/delete-ticket/delete-ticket.controller.js';
 import { CreateCommentController } from '../../ticket-comment/use-cases/create-comment/create-comment.controller.js';
+import { AssignTicketUserController } from '../use-cases/assign-ticket-user/assign-ticket-user.controller.js';
 
 export const ticketRoutes = Router();
 
@@ -18,6 +19,7 @@ const listTicketsController = new ListTicketsController();
 const getTicketController = new GetTicketController();
 const updateTicketController = new UpdateTicketController();
 const deleteTicketController = new DeleteTicketController();
+const assignTicketUserController = new AssignTicketUserController();
 
 const createCommentController = new CreateCommentController();
 
@@ -34,3 +36,5 @@ ticketRoutes.patch('/:id', updateTicketController.handle.bind(updateTicketContro
 ticketRoutes.delete('/:id', deleteTicketController.handle.bind(deleteTicketController));
 
 ticketRoutes.post('/:id/comments', createCommentController.handle.bind(createCommentController));
+
+ticketRoutes.patch('/:id/assign', assignTicketUserController.handle.bind(assignTicketUserController));
