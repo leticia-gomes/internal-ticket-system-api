@@ -1,321 +1,126 @@
-# Internal Ticket System
+# Internal Ticket System API
 
-Full Stack application for **internal ticket management**, developed as part of a technical challenge focused on **Vue.js and Node.js**.
+API REST para gerenciamento de chamados internos, desenvolvida em **Node.js + TypeScript** como parte de um **desafio técnico Full Stack**.
 
-The solution was designed to demonstrate practical knowledge of:
+O projeto foi desenvolvido com foco em **arquitetura modular, separação de responsabilidades, segurança, validação de dados, persistência relacional, autenticação e manutenibilidade**.
 
-* Front-end development with Vue 3 and TypeScript;
-* REST API development with Node.js and Express;
-* Authentication and protected resources;
-* Relational database modeling;
-* Data validation;
-* Modular architecture and separation of responsibilities;
-* Ticket lifecycle management;
-* Comments and ticket history;
-* Real-time communication with Socket.IO;
-* Automated testing;
-* Database migrations and seeds;
-* Front-end / back-end integration.
+A API faz parte de uma solução Full Stack composta por dois projetos:
 
-The visual interface intentionally follows a simple and functional approach, according to the challenge specification, which prioritizes **code quality, organization, maintainability and technical decisions** over visual complexity.
+| Projeto                        | Responsabilidade                    |
+| ------------------------------ | ----------------------------------- |
+| **Internal Ticket System UI**  | Interface web em Vue 3 + TypeScript |
+| **Internal Ticket System API** | API REST em Node.js + TypeScript    |
 
 ---
 
-## Challenge
+## Sobre o desafio
 
-The application simulates an internal support environment where authenticated users can create, track and manage internal tickets.
+A aplicação simula um sistema interno de atendimento, permitindo que usuários autenticados criem e acompanhem chamados, atribuam responsáveis, alterem status e prioridade e adicionem comentários.
 
-A ticket contains information such as:
+Cada chamado possui informações como:
 
-* Title;
-* Description;
+* Título;
+* Descrição;
 * Status;
-* Priority;
-* Responsible user;
-* Creator;
-* Creation date;
-* Last update date.
+* Prioridade;
+* Responsável;
+* Usuário criador;
+* Data de criação;
+* Data de atualização.
 
-Users can also add comments to tickets and follow their lifecycle.
-
-The solution is divided into two repositories:
-
-| Repository                   | Responsibility   |
-| ---------------------------- | ---------------- |
-| `internal-ticket-system-ui`  | Vue 3 front-end  |
-| `internal-ticket-system-api` | Node.js REST API |
+Além do CRUD de chamados, a API possui autenticação, validação de dados, comentários e infraestrutura para comunicação em tempo real.
 
 ---
 
-## Solution Architecture
+# Principais funcionalidades
 
-The complete solution follows this architecture:
+### Autenticação
 
-```text
-                         ┌─────────────────────────┐
-                         │       User / Browser     │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │     Vue 3 + TypeScript  │
-                         │        Front-end        │
-                         └────────────┬────────────┘
-                                      │
-                       ┌──────────────┴──────────────┐
-                       │                             │
-                  HTTP / REST                    Socket.IO
-                       │                             │
-                       ▼                             ▼
-              ┌─────────────────────────────────────────┐
-              │             Node.js API                  │
-              │              Express                     │
-              ├─────────────────────────────────────────┤
-              │ Authentication                          │
-              │ Validation                              │
-              │ Business rules                          │
-              │ Ticket management                        │
-              │ Comments                                 │
-              │ Real-time events                         │
-              └────────────────┬────────────────────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │       MySQL          │
-                    │      TypeORM         │
-                    └──────────────────────┘
-```
+* Login com e-mail e senha;
+* Autenticação baseada em JWT;
+* Senhas armazenadas utilizando hash com `bcryptjs`;
+* Proteção de rotas;
+* Middleware de autenticação;
+* Controle de acesso baseado no usuário autenticado.
 
-The front-end communicates with the API through REST endpoints and uses Socket.IO for real-time communication.
+### Usuários
 
-The API is responsible for authentication, validation, business logic, persistence and event emission.
+* Consulta de usuários;
+* Associação de usuários como responsáveis pelos chamados;
+* Seeds para criação dos usuários iniciais;
+* Relacionamento entre usuários e chamados.
 
----
+### Chamados
 
-# Repositories
+Implementação do fluxo de gerenciamento de chamados:
 
-## Front-end
+* Criar chamado;
+* Listar chamados;
+* Consultar detalhes;
+* Editar chamado;
+* Excluir chamado;
+* Alterar status;
+* Alterar prioridade;
+* Atribuir responsável;
+* Identificar usuário criador.
 
-**Internal Ticket System UI**
+### Filtros
 
-Vue 3 + TypeScript application responsible for authentication, navigation, ticket management, users and comments.
-
-Repository:
-
-https://github.com/leticia-gomes/internal-ticket-system-ui
-
-Main technologies:
-
-* Vue 3;
-* TypeScript;
-* Vite;
-* Pinia;
-* Vue Router;
-* Axios;
-* Socket.IO Client;
-* ESLint;
-* Prettier.
-
----
-
-## Back-end
-
-**Internal Ticket System API**
-
-REST API responsible for authentication, business rules, persistence, validation and real-time communication.
-
-Repository:
-
-https://github.com/leticia-gomes/internal-ticket-system-api
-
-Main technologies:
-
-* Node.js 22+;
-* TypeScript;
-* Express;
-* TypeORM;
-* MySQL;
-* Socket.IO;
-* JWT;
-* bcryptjs;
-* Zod;
-* Helmet;
-* CORS;
-* Vitest;
-* Supertest.
-
----
-
-# Main Features
-
-## Authentication
-
-The system provides authentication using:
-
-* E-mail;
-* Password;
-* JWT;
-* Password hashing with bcryptjs;
-* Protected API routes;
-* Protected front-end routes.
-
-Only authenticated users can access the ticket management area.
-
----
-
-## Users
-
-The API provides access to registered users.
-
-Users contain information such as:
-
-* Name;
-* E-mail;
-* Creation date.
-
-Users can be assigned as responsible for tickets.
-
-A complete public user-registration workflow was intentionally not implemented because it is outside the challenge scope.
-
-Initial users are provided through the application's seed mechanism.
-
----
-
-## Ticket Management
-
-The application implements the complete ticket CRUD workflow:
-
-* Create;
-* List;
-* View details;
-* Edit;
-* Delete.
-
-Each ticket contains:
-
-```text
-Title
-Description
-Status
-Priority
-Responsible user
-Creator
-Created at
-Updated at
-```
-
-### Statuses
-
-```text
-Open
-In progress
-Resolved
-Closed
-```
-
-### Priorities
-
-```text
-Low
-Medium
-High
-Urgent
-```
-
----
-
-## Ticket Search and Filtering
-
-The ticket listing supports filtering/search capabilities required by the challenge.
-
-The API exposes filtering parameters and the front-end provides the corresponding interface.
-
-Available filtering capabilities include criteria such as:
+A listagem de chamados suporta filtros por informações relevantes do chamado, como:
 
 * Status;
-* Priority;
-* Responsible user;
-* Title search.
+* Prioridade.
 
-This keeps filtering logic close to the API while allowing the front-end to remain focused on presentation and interaction.
+A filtragem é realizada na API, mantendo a regra de consulta no back-end e deixando o front-end responsável pela apresentação e interação.
 
----
+### Comentários
 
-## Ticket Details
+Usuários autenticados podem adicionar comentários aos chamados.
 
-The ticket details screen provides the complete ticket information and allows the user to update:
+Cada comentário possui relacionamento com:
 
-* Title;
-* Description;
-* Status;
-* Priority;
-* Responsible user.
+* Chamado;
+* Autor;
+* Conteúdo;
+* Data de criação.
 
-The screen also displays the ticket comments.
+Os comentários também são retornados junto aos detalhes do chamado.
 
----
+### Comunicação em tempo real
 
-## Comments
+A API utiliza **Socket.IO** para suportar comunicação em tempo real.
 
-Authenticated users can add comments to tickets.
-
-Each comment is associated with:
-
-* Ticket;
-* Author;
-* Content;
-* Creation date.
-
-Comments are returned as part of the ticket details and displayed chronologically by the front-end.
-
----
-
-## Ticket History
-
-The API contains a dedicated ticket history domain to provide traceability for ticket changes.
-
-This creates a foundation for auditing the ticket lifecycle and understanding how a ticket evolved over time.
-
----
-
-# Real-Time Communication
-
-The API uses **Socket.IO** to support real-time communication.
-
-The architecture allows the REST API and Socket.IO to operate through the same HTTP server:
+A infraestrutura permite que o mesmo servidor HTTP disponibilize:
 
 ```text
-                    HTTP Server
-                   /           \
-                  /             \
-                 ▼               ▼
-             REST API        Socket.IO
-                 │               │
-                 │               │
-                 ▼               ▼
-             Database      Connected clients
+                 HTTP Server
+                /           \
+               /             \
+              ▼               ▼
+          REST API        Socket.IO
+              │               │
+              ▼               ▼
+          Database      Connected Clients
 ```
 
-A dedicated socket service isolates Socket.IO infrastructure from the application's business logic.
+O Socket.IO foi isolado em uma camada própria para evitar que detalhes de infraestrutura de comunicação em tempo real sejam acoplados às regras de negócio.
 
-The front-end includes `socket.io-client` and uses centralized application state through Pinia, providing the appropriate structure for synchronizing ticket and comment state between connected clients.
-
-> **Current status:** the Socket.IO infrastructure is implemented, but the complete end-to-end real-time synchronization flow between all ticket/comment operations and the front-end still requires further refinement.
-
-This is explicitly documented as an incomplete item rather than being presented as fully implemented.
+> **Observação:** a infraestrutura de Socket.IO está implementada, porém a sincronização completa e consistente de todos os eventos entre API e interface ainda possui pontos a serem refinados nesta entrega.
 
 ---
 
-# Back-end Architecture
+# Arquitetura
 
-The API follows a modular, feature-oriented architecture.
+A API utiliza uma arquitetura **modular e orientada a funcionalidades (feature-based)**.
 
 ```text
 src/
 ├── config/
+│
 ├── database/
 │   ├── migrations/
 │   └── seeds/
+│
 ├── modules/
 │   ├── auth/
 │   ├── role/
@@ -323,6 +128,7 @@ src/
 │   ├── ticket/
 │   ├── ticket-comment/
 │   └── ticket-history/
+│
 ├── shared/
 │   ├── errors/
 │   ├── interfaces/
@@ -330,657 +136,776 @@ src/
 │   ├── socket/
 │   ├── types/
 │   └── utils/
+│
 ├── app.ts
 └── server.ts
 ```
 
-Responsibilities are separated between:
+A separação de responsabilidades contempla:
 
 * Routes;
 * Controllers;
-* Use cases/services;
+* Services / Use Cases;
 * Repositories;
 * Entities;
-* Validation;
-* Middleware;
-* Error handling;
-* Socket infrastructure;
-* Database infrastructure.
+* Schemas de validação;
+* Middlewares;
+* Tratamento de erros;
+* Infraestrutura de banco;
+* Infraestrutura de Socket.IO.
 
-This organization keeps business rules independent from infrastructure concerns and makes the application easier to maintain and evolve.
-
----
-
-# Front-end Architecture
-
-The front-end follows a feature-based organization.
-
-```text
-src/
-├── app/
-│   ├── guards/
-│   └── router/
-├── modules/
-│   ├── auth/
-│   ├── dashboard/
-│   ├── tickets/
-│   ├── users/
-│   └── errors/
-├── assets/
-└── main.ts
-```
-
-Each domain contains the resources necessary for its own functionality, including:
-
-* Pages;
-* Components;
-* API modules;
-* Services;
-* Stores;
-* Types;
-* Routes.
-
-The general communication flow is:
-
-```text
-Vue Page
-    ↓
-Pinia Store
-    ↓
-Domain Service
-    ↓
-API Module
-    ↓
-Axios
-    ↓
-REST API
-```
-
-This prevents Vue pages from becoming tightly coupled to HTTP implementation details.
+Essa organização permite manter as regras de negócio desacopladas de detalhes de infraestrutura, facilitando manutenção, testes e evolução do projeto.
 
 ---
 
-# Validation and Error Handling
+# Organização por domínio
 
-The API validates incoming data using **Zod**.
+Os principais módulos da aplicação são:
 
-Validation occurs at the API boundary before data reaches business logic or persistence.
+```text
+auth
+│
+├── Autenticação
+└── Geração e validação de tokens
 
-Errors are handled through a centralized application error mechanism.
+user
+│
+├── Usuários
+└── Consulta de usuários
 
-For example:
+role
+│
+└── Papéis e permissões
+
+ticket
+│
+├── Criação
+├── Listagem
+├── Consulta
+├── Atualização
+├── Exclusão
+├── Filtros
+└── Atribuição de responsável
+
+ticket-comment
+│
+├── Criação
+└── Consulta
+
+```
+
+Essa divisão evita concentrar toda a regra de negócio em controllers ou arquivos genéricos.
+
+---
+
+# Fluxo de uma requisição
+
+De forma simplificada, uma requisição segue o fluxo:
+
+```text
+HTTP Request
+     │
+     ▼
+   Route
+     │
+     ▼
+ Middleware
+     │
+     ▼
+ Controller
+     │
+     ▼
+ Service / Use Case
+     │
+     ▼
+ Repository
+     │
+     ▼
+ TypeORM
+     │
+     ▼
+   MySQL
+```
+
+A resposta retorna pelo caminho inverso até o cliente.
+
+Essa separação permite que cada camada tenha uma responsabilidade específica.
+
+---
+
+# Validação e tratamento de erros
+
+A API utiliza **Zod** para validação dos dados recebidos.
+
+As requisições são validadas na entrada da aplicação antes que os dados sejam encaminhados para as regras de negócio e persistência.
+
+Exemplo de resposta de validação:
 
 ```json
 {
-  "message": "Validation failed",
+  "message": "Falha na validação",
   "code": "VALIDATION_ERROR",
   "errors": [
     {
       "field": "title",
       "message": "Too small: expected string to have >=3 characters"
+    },
+    {
+      "field": "description",
+      "message": "Too small: expected string to have >=5 characters"
     }
   ]
 }
 ```
 
-This structured response allows the front-end to display validation errors consistently.
+Esse formato permite que o front-end identifique exatamente quais campos precisam ser corrigidos.
 
-The API also uses:
-
-* Helmet;
-* CORS;
-* Environment configuration;
-* JWT authentication;
-* Password hashing.
+O tratamento de erros também é centralizado através de middleware próprio.
 
 ---
 
-# Database
+# Segurança
 
-The application uses:
+Foram adotadas algumas medidas básicas de segurança na API:
 
-* MySQL;
-* TypeORM;
-* Versioned migrations;
-* Database seeds.
+* JWT para autenticação;
+* `bcryptjs` para hash de senhas;
+* Helmet para headers de segurança;
+* CORS configurável por ambiente;
+* Variáveis sensíveis através de `.env`;
+* Rotas protegidas por middleware;
+* Validação de entrada com Zod.
 
-Main domains include:
+---
+
+# Banco de dados
+
+A aplicação utiliza:
+
+* **MySQL** como banco relacional;
+* **TypeORM** como ORM;
+* Migrations para versionamento do schema;
+* Seeds para dados iniciais.
+
+Os principais domínios persistidos são:
 
 ```text
 roles
 users
 tickets
 ticket_comments
-ticket_history
 ```
 
-Database changes are versioned through migrations, making the database structure reproducible across environments.
+### Relacionamentos simplificados
+
+```text
+Role
+ │
+ └── User
+       │
+       ├── Tickets criados
+       │
+       └── Tickets atribuídos
+
+Ticket
+ │
+ ├── Comments
+ │      └── User
+ │
+ └── History
+```
+
+O uso de migrations permite reproduzir a estrutura do banco de maneira consistente entre diferentes ambientes.
 
 ---
 
-# Technology Stack
-
-## Front-end
-
-| Technology       | Purpose                 |
-| ---------------- | ----------------------- |
-| Vue 3            | UI framework            |
-| TypeScript       | Static typing           |
-| Vite             | Build tooling           |
-| Pinia            | State management        |
-| Vue Router       | Navigation              |
-| Axios            | HTTP communication      |
-| Socket.IO Client | Real-time communication |
-| ESLint           | Code quality            |
-| Prettier         | Code formatting         |
+# Tecnologias utilizadas
 
 ## Back-end
 
-| Technology  | Purpose                    |
-| ----------- | -------------------------- |
-| Node.js 22+ | Runtime                    |
-| TypeScript  | Static typing              |
-| Express     | HTTP framework             |
-| TypeORM     | ORM                        |
-| MySQL       | Relational database        |
-| Socket.IO   | Real-time communication    |
-| JWT         | Authentication             |
-| bcryptjs    | Password hashing           |
-| Zod         | Request validation         |
-| Helmet      | HTTP security headers      |
-| CORS        | Cross-origin configuration |
-| Vitest      | Automated testing          |
-| Supertest   | HTTP testing               |
+| Tecnologia      | Utilização                |
+| --------------- | ------------------------- |
+| **Node.js 22+** | Runtime                   |
+| **TypeScript**  | Tipagem estática          |
+| **Express 5**   | Framework HTTP            |
+| **TypeORM**     | ORM e persistência        |
+| **MySQL**       | Banco de dados relacional |
+| **Socket.IO**   | Comunicação em tempo real |
+| **JWT**         | Autenticação              |
+| **bcryptjs**    | Hash de senhas            |
+| **Zod**         | Validação                 |
+| **Helmet**      | Segurança HTTP            |
+| **CORS**        | Controle de origem        |
+| **Vitest**      | Testes automatizados      |
+| **Supertest**   | Testes HTTP               |
+| **ESLint**      | Qualidade de código       |
+| **Prettier**    | Formatação                |
+
+As dependências e scripts disponíveis no projeto estão definidos no `package.json`.
 
 ---
 
-# Running the Solution
+# Pré-requisitos
 
-The application consists of two independent projects.
+Antes de executar o projeto, tenha instalado:
 
-Both repositories must be available locally.
+* Node.js **22 ou superior**;
+* npm;
+* MySQL 8+;
+* Git.
 
-## 1. Clone the repositories
+---
+
+# Instalação
+
+Clone o repositório:
 
 ```bash
-git clone https://github.com/leticia-gomes/internal-ticket-system-ui.git
 git clone https://github.com/leticia-gomes/internal-ticket-system-api.git
 ```
 
-You can organize them as:
-
-```text
-internal-ticket-system/
-├── internal-ticket-system-ui/
-└── internal-ticket-system-api/
-```
-
----
-
-# ⚙️ Back-end Setup
-
-Enter the API directory:
+Entre na pasta:
 
 ```bash
 cd internal-ticket-system-api
 ```
 
-Install dependencies:
+Instale as dependências:
 
 ```bash
 npm install
 ```
 
-Create the MySQL database:
+---
 
-```sql
-CREATE DATABASE internal_ticket_system;
-```
+# Configuração das variáveis de ambiente
 
-Create the environment file:
+Copie o arquivo de exemplo:
+
+### Linux / macOS
 
 ```bash
 cp .env.example .env
 ```
 
-On Windows PowerShell:
+### Windows PowerShell
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Configure the environment variables:
+Configure as variáveis de acordo com seu ambiente.
+
+Exemplo:
 
 ```env
 NODE_ENV=development
+
 PORT=3333
 
 DATABASE_HOST=localhost
 DATABASE_PORT=3306
 DATABASE_USERNAME=root
-DATABASE_PASSWORD=your_password
+DATABASE_PASSWORD=sua_senha
 DATABASE_NAME=internal_ticket_system
 
-JWT_SECRET=your_secret
+JWT_SECRET=sua_chave_secreta
 JWT_EXPIRES_IN=1d
 
 FRONTEND_URL=http://localhost:5173
 ```
 
-Run migrations:
+> Os valores acima são apenas exemplos. Não versionar o arquivo `.env` com informações sensíveis.
+
+---
+
+# Banco de dados
+
+Crie o banco no MySQL:
+
+```sql
+CREATE DATABASE internal_ticket_system;
+```
+
+Execute as migrations:
 
 ```bash
 npm run migration:run
 ```
 
-Run seeds:
+Execute os seeds:
 
 ```bash
 npm run seed
 ```
 
-Start the API:
+As migrations são responsáveis pela criação e evolução da estrutura do banco, enquanto os seeds fornecem os dados iniciais necessários para execução da aplicação.
+
+---
+
+# Executando a API
+
+Para desenvolvimento:
 
 ```bash
 npm run dev
 ```
 
-The API will normally be available at:
+Para gerar o build:
+
+```bash
+npm run build
+```
+
+Para executar a versão compilada:
+
+```bash
+npm start
+```
+
+A API estará disponível, por padrão, em:
 
 ```text
 http://localhost:3333
 ```
 
-Health check:
+---
 
-```text
+# Health Check
+
+A aplicação possui endpoint para verificar a disponibilidade da API:
+
+```http
 GET /health
 ```
 
----
-
-# Front-end Setup
-
-Open another terminal and enter the UI directory:
+Exemplo:
 
 ```bash
-cd internal-ticket-system-ui
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Create the environment file:
-
-```bash
-cp .env.example .env
-```
-
-On Windows PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Configure:
-
-```env
-VITE_API_URL=http://localhost:3333
-```
-
-Start the application:
-
-```bash
-npm run dev
-```
-
-The front-end will normally be available at:
-
-```text
-http://localhost:5173
+curl http://localhost:3333/health
 ```
 
 ---
 
-# Tests
+# Testes
 
-The challenge requires automated API tests consisting of:
+O projeto utiliza **Vitest** para testes automatizados e **Supertest** para testes HTTP.
 
-* At least two unit tests;
-* At least two integration tests using a database.
+Scripts disponíveis:
 
-Unit testing was implemented using Vitest.
+### Executar todos os testes
 
-At the current submission stage:
+```bash
+npm test
+```
 
-* ✅ Unit tests are implemented;
-* ⚠️ Integration test coverage is incomplete;
-* ℹ️ Front-end automated tests were not required by the challenge.
-
-Run unit tests:
+### Testes unitários
 
 ```bash
 npm run test:unit
 ```
 
-Integration test command:
+### Testes em modo watch
+
+```bash
+npm run test:watch
+```
+
+### Testes de integração
 
 ```bash
 npm run test:integration
 ```
 
-The integration-test requirement is intentionally documented as incomplete.
+### Verificação de tipos
+
+```bash
+npm run typecheck
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+### Formatação
+
+```bash
+npm run format:check
+```
+
+### Validação completa
+
+```bash
+npm run validate
+```
+
+O projeto possui testes unitários implementados.
+
+> **Status da entrega:** a cobertura de testes de integração ainda está incompleta. Essa limitação é apresentada de forma explícita nesta documentação para refletir o estado real da entrega do desafio.
 
 ---
 
-# API Documentation
+# Estratégia de testes
 
-The API is documented through **Postman**.
+A estrutura de testes foi separada por responsabilidade:
 
-The Postman documentation provides the endpoint catalog and examples for:
+```text
+Testes
+│
+├── Unitários
+│   └── Regras e componentes isolados
+│
+└── Integração
+    └── Integração com banco/API
+```
 
-* Authentication;
-* Users;
-* Tickets;
-* Ticket filtering;
-* Ticket details;
-* Ticket updates;
-* Ticket deletion;
-* Comments;
-* Validation errors.
+Essa separação permite evoluir a cobertura sem misturar testes unitários com testes que dependem de infraestrutura externa.
 
-The Postman collection is being provided as part of the technical challenge delivery so the API can be manually explored and tested independently of the front-end.
+---
+
+# Migrations
+
+Comandos disponíveis:
+
+### Criar migration
+
+```bash
+npm run migration:create
+```
+
+### Gerar migration
+
+```bash
+npm run migration:generate
+```
+
+### Executar migrations
+
+```bash
+npm run migration:run
+```
+
+### Reverter última migration
+
+```bash
+npm run migration:revert
+```
+
+### Visualizar status
+
+```bash
+npm run migration:show
+```
+
+---
+
+# API
+
+A API disponibiliza endpoints para os principais domínios da aplicação:
+
+```text
+/auth
+/users
+/tickets
+/tickets/:id
+/tickets/:id/comments
+```
+
+Entre as operações disponibilizadas estão:
+
+* Autenticação;
+* Consulta de usuários;
+* Criação de chamados;
+* Listagem de chamados;
+* Filtros;
+* Consulta de detalhes;
+* Atualização;
+* Exclusão;
+* Atribuição de responsável;
+* Criação de comentários.
+
+A documentação e exploração dos endpoints pode ser realizada através da coleção/documentação disponibilizada no **Postman**.
+
+---
+
+# Socket.IO
+
+O servidor HTTP também disponibiliza a infraestrutura de Socket.IO.
+
+Arquiteturalmente:
+
+```text
+                    Node.js Server
+                    /            \
+                   /              \
+                  ▼                ▼
+             Express API       Socket.IO
+                  │                │
+                  ▼                ▼
+               MySQL          Connected Clients
+```
+
+O serviço de socket é mantido separado da lógica de negócio.
+
+Eventos relacionados a alterações de chamados e comentários podem ser utilizados para manter clientes conectados sincronizados.
+
+> A implementação da infraestrutura está presente no projeto, porém o fluxo completo de sincronização em tempo real ainda pode receber melhorias.
+
+---
+
+# Integração com o Front-end
+
+O front-end correspondente está disponível em outro repositório:
+
+**Internal Ticket System UI**
+
+```text
+Vue 3
+   │
+   ├── Axios ───────────────► REST API
+   │
+   └── Socket.IO Client ───► Socket.IO
+```
+
+O front-end utiliza:
+
+* Vue 3;
+* TypeScript;
+* Vite;
+* Pinia;
+* Vue Router;
+* Axios;
+* Socket.IO Client.
+
+---
+
+# Repositório do Front-end
+
+[Internal Ticket System UI](https://github.com/leticia-gomes/internal-ticket-system-ui)
+
+O projeto de interface é responsável por:
+
+* Login;
+* Navegação;
+* Listagem de chamados;
+* Filtros;
+* Criação;
+* Edição;
+* Exclusão;
+* Detalhes;
+* Atribuição de responsáveis;
+* Comentários;
+* Integração com a API.
 
 ---
 
 # Docker
 
-Docker is a requirement of the complete challenge and should provide an environment containing:
+A especificação do desafio prevê uma configuração Docker contemplando:
 
 ```text
-Front-end
-    +
-API
-    +
-MySQL
+┌───────────────────────┐
+│      Front-end        │
+├───────────────────────┤
+│         API           │
+├───────────────────────┤
+│        MySQL          │
+└───────────────────────┘
 ```
 
-The final full-stack Docker configuration is **not complete in the current submission**.
+A configuração Docker completa da solução Full Stack ainda não está finalizada nesta entrega.
 
-For this reason, no Docker command is presented as fully supported when it cannot currently be guaranteed to work.
+Por esse motivo, o README não apresenta comandos Docker como se fossem uma funcionalidade concluída e validada.
 
-The application can be executed locally following the setup instructions above.
-
----
-
-# Challenge Requirements
-
-The following table summarizes the current implementation status.
-
-| Requirement                        | Status        |
-| ---------------------------------- | ------------- |
-| Vue 3                              | ✅ Implemented |
-| TypeScript                         | ✅ Implemented |
-| Node.js 22+                        | ✅ Implemented |
-| Express                            | ✅ Implemented |
-| MySQL                              | ✅ Implemented |
-| Authentication                     | ✅ Implemented |
-| Protected routes                   | ✅ Implemented |
-| Password hashing                   | ✅ Implemented |
-| Users                              | ✅ Implemented |
-| Ticket creation                    | ✅ Implemented |
-| Ticket listing                     | ✅ Implemented |
-| Ticket details                     | ✅ Implemented |
-| Ticket editing                     | ✅ Implemented |
-| Ticket deletion                    | ✅ Implemented |
-| Ticket status                      | ✅ Implemented |
-| Ticket priority                    | ✅ Implemented |
-| Responsible user                   | ✅ Implemented |
-| Ticket filtering/search            | ✅ Implemented |
-| Comments                           | ✅ Implemented |
-| Ticket history                     | ✅ Implemented |
-| Request validation                 | ✅ Implemented |
-| Centralized error handling         | ✅ Implemented |
-| Database migrations                | ✅ Implemented |
-| Database seeds                     | ✅ Implemented |
-| Socket.IO infrastructure           | ✅ Implemented |
-| Complete real-time synchronization | ⚠️ Incomplete |
-| Unit tests                         | ✅ Implemented |
-| Integration tests                  | ⚠️ Incomplete |
-| Postman documentation              | ✅ Available   |
-| Full-stack Docker setup            | ⚠️ Incomplete |
+A execução local através de Node.js + MySQL é o fluxo recomendado para avaliação desta versão.
 
 ---
 
-# Technical Decisions
+# Status do desafio
 
-## Feature-based architecture
-
-The solution uses a feature-oriented structure instead of grouping the entire application by technical layer.
-
-This makes business domains easier to locate and allows features such as authentication, tickets and users to evolve independently.
+| Requisito                        |     Status     |
+| -------------------------------- | :------------: |
+| Node.js 22+                      |        ✅       |
+| TypeScript                       |        ✅       |
+| Express                          |        ✅       |
+| MySQL                            |        ✅       |
+| TypeORM                          |        ✅       |
+| Autenticação                     |        ✅       |
+| JWT                              |        ✅       |
+| Hash de senha                    |        ✅       |
+| Usuários                         |        ✅       |
+| CRUD de chamados                 |        ✅       |
+| Status do chamado                |        ✅       |
+| Prioridade                       |        ✅       |
+| Responsável                      |        ✅       |
+| Filtros                          |        ✅       |
+| Comentários                      |        ✅       |
+| Histórico                        |        ✅       |
+| Validação com Zod                |        ✅       |
+| Tratamento centralizado de erros |        ✅       |
+| Migrations                       |        ✅       |
+| Seeds                            |        ✅       |
+| Socket.IO                        |        ✅       |
+| Sincronização realtime completa  | ⚠️ Em evolução |
+| Testes unitários                 |        ✅       |
+| Testes de integração             | ⚠️ Incompletos |
+| Documentação Postman             |        ✅       |
+| Docker Full Stack                |  ⚠️ Incompleto |
 
 ---
 
-## TypeScript throughout the stack
+# Decisões técnicas
 
-Both front-end and back-end use TypeScript.
+## Arquitetura modular
 
-This provides stronger contracts between:
+A organização por domínio foi escolhida para facilitar a manutenção e permitir que cada funcionalidade evolua de maneira independente.
 
-* API requests;
-* API responses;
-* Domain models;
-* Stores;
-* Services;
-* Components.
+Em vez de concentrar controllers, services e repositories em diretórios globais, cada módulo mantém os elementos relacionados à sua própria regra de negócio.
 
 ---
 
-## REST + Socket.IO
+## TypeScript
 
-REST was used for traditional CRUD and resource operations, while Socket.IO was selected for real-time communication.
+TypeScript foi utilizado em todo o back-end para:
 
-This combination keeps responsibilities clear:
+* Tipagem estática;
+* Maior segurança durante o desenvolvimento;
+* Melhor suporte da IDE;
+* Contratos explícitos;
+* Redução de erros em tempo de execução.
+
+---
+
+## TypeORM + Migrations
+
+O TypeORM foi escolhido para facilitar a comunicação com o MySQL e manter as entidades relacionadas ao domínio.
+
+As migrations foram utilizadas para evitar alterações manuais e não versionadas no banco de dados.
+
+---
+
+## Zod
+
+A validação foi colocada na fronteira da aplicação para garantir que dados inválidos não avancem para as regras de negócio.
+
+Além disso, o formato padronizado de erros facilita o tratamento pelo front-end.
+
+---
+
+## JWT
+
+JWT foi utilizado para autenticação stateless da API.
+
+Após o login, o cliente recebe um token que deve ser enviado nas requisições protegidas.
+
+---
+
+## Separação entre Controller, Service e Repository
+
+A divisão permite:
 
 ```text
-REST
-↓
-CRUD / Queries / Authentication
-
-Socket.IO
-↓
-Real-time events
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+Database
 ```
 
----
+Com isso:
 
-## Centralized state management
+* Controllers lidam com HTTP;
+* Services concentram regras de negócio;
+* Repositories lidam com persistência.
 
-Pinia was selected for the front-end because the application contains shared state such as:
-
-* Authentication;
-* Tickets;
-* Users;
-* Comments.
-
-It also provides a suitable integration point for Socket.IO events.
+Essa abordagem facilita testes e reduz acoplamento.
 
 ---
 
-## API validation
+# Limitações conhecidas
 
-Zod was selected to validate external input at the API boundary.
+Como se trata de uma entrega de desafio técnico realizada dentro de um período limitado, alguns pontos permanecem como oportunidades de evolução:
 
-Invalid data is rejected before reaching the business and persistence layers.
+### Testes de integração
 
----
+A estrutura de testes de integração está preparada, porém a cobertura ainda não foi concluída.
 
-## Database migrations
+### Sincronização em tempo real
 
-TypeORM migrations were used instead of relying on a manually configured database.
+A infraestrutura Socket.IO está implementada, mas o fluxo completo de sincronização entre todos os eventos da API e o estado da aplicação cliente ainda pode ser aprimorado.
 
-This makes schema changes reproducible and version-controlled.
+### Docker Full Stack
 
----
+A configuração Docker envolvendo simultaneamente front-end, API e banco de dados ainda não está concluída nesta versão.
 
-## Transparent scope management
-
-The challenge had a fixed delivery period.
-
-Features outside the mandatory scope were intentionally not prioritized when they would not contribute significantly to the evaluation.
-
-Remaining mandatory gaps are explicitly documented instead of being presented as completed functionality.
+Esses pontos são documentados intencionalmente para manter transparência sobre o estado atual da solução.
 
 ---
 
-# Development Workflow
+# Próximos passos
 
-Development followed a feature-oriented Git workflow.
+Entre as evoluções planejadas estão:
 
-Examples:
-
-```text
-main
-├── feat/auth
-├── feat/user
-├── feat/ticket
-├── feat/socket
-├── chore/database
-└── chore/environment
-```
-
-Commits follow the **Conventional Commits** style:
-
-```text
-feat: implement authentication
-feat: create ticket entity
-feat: add ticket comments
-fix: correct database connection
-test: add authentication unit tests
-docs: update README
-chore: configure environment
-```
-
-This keeps the development history easier to understand and review.
+* Aumentar a cobertura de testes unitários;
+* Implementar testes de integração com banco isolado;
+* Refinar a sincronização Socket.IO;
+* Finalizar o ambiente Docker Full Stack;
+* Expandir a cobertura de testes da API;
+* Evoluir a documentação dos endpoints;
+* Adicionar testes automatizados de cenários de autenticação e autorização.
 
 ---
 
-# Known Limitations
+# Scripts disponíveis
 
-The following points are intentionally disclosed as part of the technical evaluation:
-
-### 1. Integration tests
-
-The required integration-test coverage is not complete.
-
-Unit tests are implemented, but the required database-backed integration tests remain a pending item.
-
-### 2. Docker
-
-The final Docker Compose configuration covering front-end, API and MySQL is not complete in the current submission.
-
-### 3. Real-time synchronization
-
-Socket.IO infrastructure is present on the API and the front-end includes the client dependency and state architecture required for integration.
-
-However, the complete end-to-end synchronization of every ticket/comment event still requires further refinement.
-
-These limitations are documented to provide an accurate representation of the submitted implementation.
-
----
-
-# Future Improvements
-
-If the project continued beyond the challenge deadline, the next priorities would be:
-
-1. Complete database-backed integration tests.
-2. Finalize Docker Compose for the complete stack.
-3. Complete end-to-end Socket.IO synchronization.
-4. Expand authentication and authorization test coverage.
-5. Add CI/CD pipelines for:
-
-   * Type checking;
-   * Linting;
-   * Automated tests;
-   * Production builds.
-6. Expand automated front-end testing if the application evolves further.
-7. Add additional observability and logging mechanisms.
+| Comando                      | Descrição                           |
+| ---------------------------- | ----------------------------------- |
+| `npm run dev`                | Executa em desenvolvimento          |
+| `npm run build`              | Compila o projeto                   |
+| `npm start`                  | Executa o build                     |
+| `npm run typecheck`          | Verifica os tipos                   |
+| `npm run lint`               | Executa ESLint                      |
+| `npm run lint:fix`           | Corrige problemas do ESLint         |
+| `npm run format`             | Formata o projeto                   |
+| `npm run format:check`       | Verifica formatação                 |
+| `npm run validate`           | Executa typecheck + lint + prettier |
+| `npm run migration:create`   | Cria migration                      |
+| `npm run migration:generate` | Gera migration                      |
+| `npm run migration:run`      | Executa migrations                  |
+| `npm run migration:revert`   | Reverte migration                   |
+| `npm run migration:show`     | Exibe status das migrations         |
+| `npm run seed`               | Executa seeds                       |
+| `npm test`                   | Executa testes                      |
+| `npm run test:unit`          | Executa testes unitários            |
+| `npm run test:integration`   | Executa testes de integração        |
+| `npm run test:watch`         | Executa testes em watch             |
 
 ---
 
-# Project Documentation
-
-For detailed information about each part of the application, refer to the individual repositories:
-
-### Front-end
-
-**Internal Ticket System UI**
-
-https://github.com/leticia-gomes/internal-ticket-system-ui
-
-Contains:
-
-* Vue architecture;
-* Pages;
-* Components;
-* Pinia stores;
-* API integration;
-* Authentication flow;
-* Ticket UI;
-* User selection;
-* Comments.
-
-### Back-end
-
-**Internal Ticket System API**
-
-https://github.com/leticia-gomes/internal-ticket-system-api
-
-Contains:
-
-* API architecture;
-* Authentication;
-* Business logic;
-* Repositories;
-* Entities;
-* Migrations;
-* Seeds;
-* Validation;
-* Error handling;
-* Socket.IO infrastructure;
-* Tests.
-
----
-
-# Author
+# Autora
 
 **Letícia Gomes Ribeiro**
 
-Full Stack Developer
-
-Technologies demonstrated in this project:
-
-`Vue.js` · `TypeScript` · `Node.js` · `Express` · `TypeORM` · `MySQL` · `Socket.IO`
+Desenvolvedora Full Stack com experiência em desenvolvimento de aplicações web, APIs, bancos de dados e interfaces modernas.
 
 ---
 
-# Technical Challenge
+## Projeto do desafio
 
-This project was developed as part of a **Full Stack Programming Challenge**, with emphasis on:
+**Back-end**
 
-* Vue.js;
-* Node.js;
-* API development;
-* Authentication;
-* Database modeling;
-* Code organization;
-* Separation of responsibilities;
-* Real-time communication;
-* Testing;
-* Maintainability.
+[Internal Ticket System API](https://github.com/leticia-gomes/internal-ticket-system-api)
 
-The implementation prioritizes **clarity, organization and technical consistency**, while explicitly documenting the remaining gaps in the current submission.
+**Front-end**
+
+[Internal Ticket System UI](https://github.com/leticia-gomes/internal-ticket-system-ui)
+
+---
+
+## Licença
+
+Este projeto foi desenvolvido para fins de **avaliação técnica**.
